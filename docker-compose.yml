@@ -1,0 +1,36 @@
+version : '3.5'
+services:
+  app:
+    restart: always
+    build:
+      context: ./app 
+    image: docker_use_case:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - db_volume:/var/lib/mysql
+    networks:
+      - app-network
+  db:
+    image: mysql:latest
+    volumes:
+      - db_volume:/var/lib/mysql
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql-petclinic
+      MYSQL_DATABASE: cabin
+      MYSQL_USER: cabin
+      MYSQL_PASSWORD: cabinpw
+    networks:
+      - app-network
+
+
+volumes:
+  db_volume:
+
+    
+networks:
+  app-network:
+    driver: bridge  
